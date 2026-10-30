@@ -1,0 +1,161 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.03kB 0.1s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 125B 0.1s done
+#3 DONE 0.1s
+
+#4 [build 1/7] FROM docker.io/library/node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85
+#4 resolve docker.io/library/node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85 0.0s done
+#4 DONE 0.0s
+
+#5 [build 2/7] WORKDIR /app
+#5 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 235.26kB 0.4s done
+#6 DONE 0.4s
+
+#7 [build 3/7] COPY package.json package-lock.json ./
+#7 DONE 0.2s
+
+#8 [build 4/7] RUN npm ci --ignore-scripts
+#8 5.562
+#8 5.562 added 61 packages, and audited 62 packages in 4s
+#8 5.562
+#8 5.562 22 packages are looking for funding
+#8 5.562   run `npm fund` for details
+#8 5.563
+#8 5.563 found 0 vulnerabilities
+#8 5.564 npm notice
+#8 5.564 npm notice New major version of npm available! 11.19.1 -> 12.2.1
+#8 5.564 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#8 5.564 npm notice To update run: npm install -g npm@12.2.1
+#8 5.564 npm notice
+#8 DONE 6.2s
+
+#9 [build 5/7] COPY . .
+#9 DONE 0.1s
+
+#10 [build 6/7] RUN npm run typecheck && npm test && npm run build
+#10 0.306
+#10 0.306 > cloudthreat-lab@1.0.0 typecheck
+#10 0.306 > tsc --noEmit && tsc -p tsconfig.web.json
+#10 0.306
+#10 1.127
+#10 1.127 > cloudthreat-lab@1.0.0 test
+#10 1.127 > node --import tsx --test --test-concurrency=1 test/*.test.ts
+#10 1.127
+#10 2.611 ✔ authenticated analyst replay persists evidence, enforces tenant isolation, and restricts deletion (143.7995ms)
+#10 2.620 ✔ malformed batches are atomic, foreign origins are denied, and no raw record is persisted (10.596625ms)
+#10 3.085 ✔ all labeled attack and benign scenarios meet their rule expectations (33.117833ms)
+#10 3.085 ✔ scenario: aws-identity-chain (2.376666ms)
+#10 3.086 ✔ scenario: azure-role-evasion (0.444792ms)
+#10 3.086 ✔ scenario: gcp-identity-chain (0.726375ms)
+#10 3.086 ✔ scenario: agent-policy-probing (0.732708ms)
+#10 3.086 ✔ scenario: approval-reuse (0.482041ms)
+#10 3.086 ✔ scenario: aws-benign-read (0.388208ms)
+#10 3.087 ✔ scenario: azure-benign-read (0.367042ms)
+#10 3.088 ✔ scenario: gcp-benign-read (0.446541ms)
+#10 3.088 ✔ scenario: failed-mutations (1.107875ms)
+#10 3.088 ✔ scenario: narrow-role (0.368083ms)
+#10 3.089 ✔ scenario: missing-role-context (0.506958ms)
+#10 3.089 ✔ scenario: remove-role (0.249083ms)
+#10 3.089 ✔ scenario: outside-window (0.389209ms)
+#10 3.090 ✔ scenario: different-actor (0.395375ms)
+#10 3.090 ✔ scenario: different-account (0.673959ms)
+#10 3.090 ✔ scenario: below-agent-threshold (0.416375ms)
+#10 3.091 ✔ scenario: wrong-order (0.497583ms)
+#10 3.091 ✔ scenario: duplicate-delivery (0.422958ms)
+#10 3.091 ✔ out-of-order delivery and duplicate batches produce stable results (1.493584ms)
+#10 3.091 ✔ conflicting IDs reject the whole batch (0.733167ms)
+#10 3.092 ✔ same source IDs in distinct accounts remain separate (0.254834ms)
+#10 3.092 ✔ normalization rejects timestamp (0.633667ms)
+#10 3.093 ✔ normalization rejects principal (0.260917ms)
+#10 3.093 ✔ normalization rejects account (0.11325ms)
+#10 3.093 ✔ normalization rejects provider (0.159916ms)
+#10 3.094 ✔ normalization rejects oversized (0.195583ms)
+#10 3.094 ✔ AWS event source must match the mutation service (0.122458ms)
+#10 3.095 ✔ empty batches, oversized batches, unknown fields in envelopes, and invalid rule logic fail closed (0.751958ms)
+#10 3.095 ✔ sequence window is inclusive at boundary and exclusive one millisecond later (1.009459ms)
+#10 3.095 ✔ threshold does not count duplicate events and suppresses repeated overlapping alerts (2.981125ms)
+#10 3.095 ✔ cross-provider strings never join and failed first step cannot start a sequence (2.51625ms)
+#10 3.095 ✔ metrics expose injected false positives and misses instead of masking them (1.63125ms)
+#10 3.096 ✔ GCP operations require the correct service and simultaneous events do not prove sequence (2.949167ms)
+#10 3.096 ✔ actual synthetic Sentinel audit export replays through the agent adapter (1.441959ms)
+#10 3.097 ✔ maximum-size no-completion sequence remains bounded (83.75375ms)
+#10 3.450 ✔ valid asymmetric access token maps to the server registry (17.549166ms)
+#10 3.452 ✔ token contract: issuer (2.450292ms)
+#10 3.454 ✔ token contract: audience (1.276917ms)
+#10 3.455 ✔ token contract: expired (1.464833ms)
+#10 3.457 ✔ token contract: future (1.073333ms)
+#10 3.458 ✔ token contract: lifetime (1.191042ms)
+#10 3.459 ✔ token contract: subject (0.817292ms)
+#10 3.460 ✔ token contract: type (1.19275ms)
+#10 3.461 ✔ token contract: jti (1.061ms)
+#10 3.463 ✔ token contract: forged-role (1.482209ms)
+#10 3.464 ✔ invalid headers, unsigned payloads, and foreign signing keys fail closed (1.414709ms)
+#10 3.482 ✔ private keys and ambiguous identities are rejected at configuration (0.96825ms)
+#10 3.482 ✔ canonical request digest ignores object key order and preserves array order (0.409ms)
+#10 3.484 ✔ rate limits include bounded key capacity and window expiry (0.214333ms)
+#10 3.484 ✔ audit detects edited content, removed middle records, and wrong keys on reopen (14.463625ms)
+#10 3.484 ✔ database transaction rolls back intent and state together (0.441125ms)
+#10 3.529 ✔ RS256 public verification and audit content-edit detection (47.74175ms)
+#10 3.539 ℹ tests 55
+#10 3.539 ℹ suites 0
+#10 3.539 ℹ pass 55
+#10 3.539 ℹ fail 0
+#10 3.539 ℹ cancelled 0
+#10 3.539 ℹ skipped 0
+#10 3.539 ℹ todo 0
+#10 3.539 ℹ duration_ms 2345.887084
+#10 3.636
+#10 3.636 > cloudthreat-lab@1.0.0 build
+#10 3.636 > tsc && node scripts/build-web.mjs
+#10 3.636
+#10 DONE 3.9s
+
+#11 [build 7/7] RUN npm prune --omit=dev --ignore-scripts
+#11 2.847
+#11 2.847 removed 11 packages, and audited 51 packages in 3s
+#11 2.847
+#11 2.847 21 packages are looking for funding
+#11 2.847   run `npm fund` for details
+#11 2.848
+#11 2.848 found 0 vulnerabilities
+#11 DONE 2.9s
+
+#12 [runtime 3/8] COPY --from=build /app/node_modules ./node_modules
+#12 CACHED
+
+#13 [runtime 4/8] COPY --from=build /app/package.json /app/package-lock.json ./
+#13 DONE 0.0s
+
+#14 [runtime 5/8] COPY --from=build /app/dist/src ./dist/src
+#14 DONE 0.0s
+
+#15 [runtime 6/8] COPY --from=build /app/dist/web ./dist/web
+#15 DONE 0.0s
+
+#16 [runtime 7/8] COPY rules ./rules
+#16 DONE 0.0s
+
+#17 [runtime 8/8] COPY fixtures ./fixtures
+#17 DONE 0.1s
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 0.1s done
+#18 exporting manifest sha256:4a495e0025d7ae6a51adc9cb8ebce5e2a0be6e4488d80385f219c76b12862672 0.0s done
+#18 exporting config sha256:a4077191b9f71670ae1cbb425548b0606d09fdafda4a394bf2d81089a632b239 done
+#18 exporting attestation manifest sha256:cea713a1a519ab62c40ef88c3149710be2bc66a0d8c9de8e2623312377912e1a 0.0s done
+#18 exporting manifest list sha256:a3b1d9e66998e5fb2bc38bb6b49ec5b954812628a5d895311ae07a28666e0118 done
+#18 naming to docker.io/library/cloudthreat-lab:local done
+#18 unpacking to docker.io/library/cloudthreat-lab:local 0.1s done
+#18 DONE 0.3s

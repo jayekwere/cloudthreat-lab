@@ -1,0 +1,233 @@
+{
+  "evaluation": {
+    "scope": "synthetic scenario-rule pairs only",
+    "scenarios": 18,
+    "rules": 6,
+    "tp": 18,
+    "fp": 0,
+    "fn": 0,
+    "tn": 90,
+    "precision": 1,
+    "recall": 1,
+    "falsePositiveRate": 0,
+    "rows": [
+      {
+        "id": "aws-identity-chain",
+        "eventCount": 3,
+        "expected": [
+          "credential-after-privilege",
+          "logging-disruption",
+          "privilege-then-evasion",
+          "privileged-role-grant"
+        ],
+        "actual": [
+          "credential-after-privilege",
+          "logging-disruption",
+          "privilege-then-evasion",
+          "privileged-role-grant"
+        ],
+        "passed": true
+      },
+      {
+        "id": "azure-role-evasion",
+        "eventCount": 2,
+        "expected": [
+          "logging-disruption",
+          "privilege-then-evasion",
+          "privileged-role-grant"
+        ],
+        "actual": [
+          "logging-disruption",
+          "privilege-then-evasion",
+          "privileged-role-grant"
+        ],
+        "passed": true
+      },
+      {
+        "id": "gcp-identity-chain",
+        "eventCount": 3,
+        "expected": [
+          "credential-after-privilege",
+          "logging-disruption",
+          "privilege-then-evasion",
+          "privileged-role-grant"
+        ],
+        "actual": [
+          "credential-after-privilege",
+          "logging-disruption",
+          "privilege-then-evasion",
+          "privileged-role-grant"
+        ],
+        "passed": true
+      },
+      {
+        "id": "agent-policy-probing",
+        "eventCount": 5,
+        "expected": [
+          "agent-denial-burst"
+        ],
+        "actual": [
+          "agent-denial-burst"
+        ],
+        "passed": true
+      },
+      {
+        "id": "approval-reuse",
+        "eventCount": 1,
+        "expected": [
+          "invalid-approval-use"
+        ],
+        "actual": [
+          "invalid-approval-use"
+        ],
+        "passed": true
+      },
+      {
+        "id": "aws-benign-read",
+        "eventCount": 1,
+        "expected": [],
+        "actual": [],
+        "passed": true
+      },
+      {
+        "id": "azure-benign-read",
+        "eventCount": 1,
+        "expected": [],
+        "actual": [],
+        "passed": true
+      },
+      {
+        "id": "gcp-benign-read",
+        "eventCount": 1,
+        "expected": [],
+        "actual": [],
+        "passed": true
+      },
+      {
+        "id": "failed-mutations",
+        "eventCount": 3,
+        "expected": [],
+        "actual": [],
+        "passed": true
+      },
+      {
+        "id": "narrow-role",
+        "eventCount": 1,
+        "expected": [],
+        "actual": [],
+        "passed": true
+      },
+      {
+        "id": "missing-role-context",
+        "eventCount": 1,
+        "expected": [],
+        "actual": [],
+        "passed": true
+      },
+      {
+        "id": "remove-role",
+        "eventCount": 1,
+        "expected": [],
+        "actual": [],
+        "passed": true
+      },
+      {
+        "id": "outside-window",
+        "eventCount": 2,
+        "expected": [
+          "privileged-role-grant"
+        ],
+        "actual": [
+          "privileged-role-grant"
+        ],
+        "passed": true
+      },
+      {
+        "id": "different-actor",
+        "eventCount": 2,
+        "expected": [
+          "privileged-role-grant"
+        ],
+        "actual": [
+          "privileged-role-grant"
+        ],
+        "passed": true
+      },
+      {
+        "id": "different-account",
+        "eventCount": 2,
+        "expected": [
+          "privileged-role-grant"
+        ],
+        "actual": [
+          "privileged-role-grant"
+        ],
+        "passed": true
+      },
+      {
+        "id": "below-agent-threshold",
+        "eventCount": 4,
+        "expected": [],
+        "actual": [],
+        "passed": true
+      },
+      {
+        "id": "wrong-order",
+        "eventCount": 2,
+        "expected": [
+          "privileged-role-grant"
+        ],
+        "actual": [
+          "privileged-role-grant"
+        ],
+        "passed": true
+      },
+      {
+        "id": "duplicate-delivery",
+        "eventCount": 1,
+        "expected": [
+          "logging-disruption"
+        ],
+        "actual": [
+          "logging-disruption"
+        ],
+        "passed": true
+      }
+    ]
+  },
+  "sample": {
+    "eventCount": 3,
+    "findings": [
+      {
+        "rule": "privileged-role-grant",
+        "severity": "high",
+        "evidence": [
+          "aws-1"
+        ]
+      },
+      {
+        "rule": "credential-after-privilege",
+        "severity": "critical",
+        "evidence": [
+          "aws-1",
+          "aws-2"
+        ]
+      },
+      {
+        "rule": "privilege-then-evasion",
+        "severity": "critical",
+        "evidence": [
+          "aws-1",
+          "aws-3"
+        ]
+      },
+      {
+        "rule": "logging-disruption",
+        "severity": "high",
+        "evidence": [
+          "aws-3"
+        ]
+      }
+    ]
+  }
+}

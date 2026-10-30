@@ -1,0 +1,877 @@
+[
+  {
+    "id": "aws-identity-chain",
+    "description": "Synthetic administrative grant, key creation, and audit disruption.",
+    "events": [
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-1",
+          "eventTime": "2026-01-01T00:00:00Z",
+          "eventName": "AttachUserPolicy",
+          "eventSource": "iam.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      },
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-2",
+          "eventTime": "2026-01-01T00:02:00Z",
+          "eventName": "CreateAccessKey",
+          "eventSource": "iam.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      },
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-3",
+          "eventTime": "2026-01-01T00:04:00Z",
+          "eventName": "StopLogging",
+          "eventSource": "cloudtrail.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      }
+    ],
+    "expected": [
+      "privileged-role-grant",
+      "logging-disruption",
+      "privilege-then-evasion",
+      "credential-after-privilege"
+    ]
+  },
+  {
+    "id": "azure-role-evasion",
+    "description": "Synthetic REST-shaped Activity Log with explicit role context and diagnostic-setting deletion.",
+    "events": [
+      {
+        "provider": "azure",
+        "record": {
+          "eventDataId": "azure-1",
+          "eventTimestamp": "2026-01-01T00:00:00Z",
+          "subscriptionId": "00000000-0000-0000-0000-000000000000",
+          "caller": "synthetic-principal",
+          "operationName": {
+            "value": "Microsoft.Authorization/roleAssignments/write"
+          },
+          "status": {
+            "value": "Succeeded"
+          },
+          "properties": {
+            "roleDefinitionId": "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+          }
+        }
+      },
+      {
+        "provider": "azure",
+        "record": {
+          "eventDataId": "azure-2",
+          "eventTimestamp": "2026-01-01T00:03:00Z",
+          "subscriptionId": "00000000-0000-0000-0000-000000000000",
+          "caller": "synthetic-principal",
+          "operationName": {
+            "value": "Microsoft.Insights/diagnosticSettings/delete"
+          },
+          "status": {
+            "value": "Succeeded"
+          },
+          "properties": {
+            "roleDefinitionId": "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+          }
+        }
+      }
+    ],
+    "expected": [
+      "privileged-role-grant",
+      "logging-disruption",
+      "privilege-then-evasion"
+    ]
+  },
+  {
+    "id": "gcp-identity-chain",
+    "description": "Synthetic owner binding, service-account key, and logging sink deletion.",
+    "events": [
+      {
+        "provider": "gcp",
+        "record": {
+          "insertId": "gcp-1",
+          "timestamp": "2026-01-01T00:00:00Z",
+          "resource": {
+            "labels": {
+              "project_id": "synthetic-project"
+            }
+          },
+          "protoPayload": {
+            "methodName": "SetIamPolicy",
+            "serviceName": "cloudresourcemanager.googleapis.com",
+            "authenticationInfo": {
+              "principalEmail": "synthetic@invalid.example"
+            },
+            "requestMetadata": {
+              "callerIp": "198.51.100.20"
+            },
+            "serviceData": {
+              "policyDelta": {
+                "bindingDeltas": [
+                  {
+                    "action": "ADD",
+                    "role": "roles/owner",
+                    "member": "user:synthetic@invalid.example"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      {
+        "provider": "gcp",
+        "record": {
+          "insertId": "gcp-2",
+          "timestamp": "2026-01-01T00:02:00Z",
+          "resource": {
+            "labels": {
+              "project_id": "synthetic-project"
+            }
+          },
+          "protoPayload": {
+            "methodName": "google.iam.admin.v1.CreateServiceAccountKey",
+            "serviceName": "iam.googleapis.com",
+            "authenticationInfo": {
+              "principalEmail": "synthetic@invalid.example"
+            },
+            "requestMetadata": {
+              "callerIp": "198.51.100.20"
+            },
+            "serviceData": {
+              "policyDelta": {
+                "bindingDeltas": [
+                  {
+                    "action": "ADD",
+                    "role": "roles/owner",
+                    "member": "user:synthetic@invalid.example"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      {
+        "provider": "gcp",
+        "record": {
+          "insertId": "gcp-3",
+          "timestamp": "2026-01-01T00:04:00Z",
+          "resource": {
+            "labels": {
+              "project_id": "synthetic-project"
+            }
+          },
+          "protoPayload": {
+            "methodName": "google.logging.v2.ConfigServiceV2.DeleteSink",
+            "serviceName": "logging.googleapis.com",
+            "authenticationInfo": {
+              "principalEmail": "synthetic@invalid.example"
+            },
+            "requestMetadata": {
+              "callerIp": "198.51.100.20"
+            },
+            "serviceData": {
+              "policyDelta": {
+                "bindingDeltas": [
+                  {
+                    "action": "ADD",
+                    "role": "roles/owner",
+                    "member": "user:synthetic@invalid.example"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ],
+    "expected": [
+      "privileged-role-grant",
+      "logging-disruption",
+      "privilege-then-evasion",
+      "credential-after-privilege"
+    ]
+  },
+  {
+    "id": "agent-policy-probing",
+    "description": "Five denied gateway tool requests in sixty seconds.",
+    "events": [
+      {
+        "provider": "sentinel",
+        "record": {
+          "seq": 1,
+          "at": "2026-01-01T00:00:05Z",
+          "tenant": "sandbox",
+          "actor": "demo-agent",
+          "action": "tool.denied",
+          "outcome": "denied",
+          "detail": {
+            "tool": "admin.delete"
+          },
+          "prev": "synthetic",
+          "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      {
+        "provider": "sentinel",
+        "record": {
+          "seq": 2,
+          "at": "2026-01-01T00:00:10Z",
+          "tenant": "sandbox",
+          "actor": "demo-agent",
+          "action": "tool.denied",
+          "outcome": "denied",
+          "detail": {
+            "tool": "admin.delete"
+          },
+          "prev": "synthetic",
+          "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      {
+        "provider": "sentinel",
+        "record": {
+          "seq": 3,
+          "at": "2026-01-01T00:00:15Z",
+          "tenant": "sandbox",
+          "actor": "demo-agent",
+          "action": "tool.denied",
+          "outcome": "denied",
+          "detail": {
+            "tool": "admin.delete"
+          },
+          "prev": "synthetic",
+          "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      {
+        "provider": "sentinel",
+        "record": {
+          "seq": 4,
+          "at": "2026-01-01T00:00:20Z",
+          "tenant": "sandbox",
+          "actor": "demo-agent",
+          "action": "tool.denied",
+          "outcome": "denied",
+          "detail": {
+            "tool": "admin.delete"
+          },
+          "prev": "synthetic",
+          "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      {
+        "provider": "sentinel",
+        "record": {
+          "seq": 5,
+          "at": "2026-01-01T00:00:25Z",
+          "tenant": "sandbox",
+          "actor": "demo-agent",
+          "action": "tool.denied",
+          "outcome": "denied",
+          "detail": {
+            "tool": "admin.delete"
+          },
+          "prev": "synthetic",
+          "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    ],
+    "expected": [
+      "agent-denial-burst"
+    ]
+  },
+  {
+    "id": "approval-reuse",
+    "description": "Gateway rejection of an invalid approval.",
+    "events": [
+      {
+        "provider": "sentinel",
+        "record": {
+          "seq": 20,
+          "at": "2026-01-01T00:00:00Z",
+          "tenant": "sandbox",
+          "actor": "demo-agent",
+          "action": "approval.invalid",
+          "outcome": "denied",
+          "detail": {
+            "tool": "admin.delete"
+          },
+          "prev": "synthetic",
+          "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    ],
+    "expected": [
+      "invalid-approval-use"
+    ]
+  },
+  {
+    "id": "aws-benign-read",
+    "description": "Successful read activity without suspicious mutations.",
+    "events": [
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-10",
+          "eventTime": "2026-01-01T00:00:00Z",
+          "eventName": "ListUsers",
+          "eventSource": "iam.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      }
+    ],
+    "expected": []
+  },
+  {
+    "id": "azure-benign-read",
+    "description": "Successful read activity without suspicious mutations.",
+    "events": [
+      {
+        "provider": "azure",
+        "record": {
+          "eventDataId": "azure-10",
+          "eventTimestamp": "2026-01-01T00:00:00Z",
+          "subscriptionId": "00000000-0000-0000-0000-000000000000",
+          "caller": "synthetic-principal",
+          "operationName": {
+            "value": "Microsoft.Resources/subscriptions/resourceGroups/read"
+          },
+          "status": {
+            "value": "Succeeded"
+          },
+          "properties": {
+            "roleDefinitionId": "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+          }
+        }
+      }
+    ],
+    "expected": []
+  },
+  {
+    "id": "gcp-benign-read",
+    "description": "Successful read activity without suspicious mutations.",
+    "events": [
+      {
+        "provider": "gcp",
+        "record": {
+          "insertId": "gcp-10",
+          "timestamp": "2026-01-01T00:00:00Z",
+          "resource": {
+            "labels": {
+              "project_id": "synthetic-project"
+            }
+          },
+          "protoPayload": {
+            "methodName": "GetIamPolicy",
+            "serviceName": "cloudresourcemanager.googleapis.com",
+            "authenticationInfo": {
+              "principalEmail": "synthetic@invalid.example"
+            },
+            "requestMetadata": {
+              "callerIp": "198.51.100.20"
+            },
+            "serviceData": {
+              "policyDelta": {
+                "bindingDeltas": [
+                  {
+                    "action": "ADD",
+                    "role": "roles/owner",
+                    "member": "user:synthetic@invalid.example"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ],
+    "expected": []
+  },
+  {
+    "id": "failed-mutations",
+    "description": "Denied cloud operations do not count as completed changes.",
+    "events": [
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-20",
+          "eventTime": "2026-01-01T00:00:00Z",
+          "eventName": "StopLogging",
+          "eventSource": "cloudtrail.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          },
+          "errorCode": "AccessDenied"
+        }
+      },
+      {
+        "provider": "azure",
+        "record": {
+          "eventDataId": "azure-20",
+          "eventTimestamp": "2026-01-01T00:00:00Z",
+          "subscriptionId": "00000000-0000-0000-0000-000000000000",
+          "caller": "synthetic-principal",
+          "operationName": {
+            "value": "Microsoft.Insights/diagnosticSettings/delete"
+          },
+          "status": {
+            "value": "Failed"
+          },
+          "properties": {
+            "roleDefinitionId": "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+          }
+        }
+      },
+      {
+        "provider": "gcp",
+        "record": {
+          "insertId": "gcp-20",
+          "timestamp": "2026-01-01T00:00:00Z",
+          "resource": {
+            "labels": {
+              "project_id": "synthetic-project"
+            }
+          },
+          "protoPayload": {
+            "methodName": "google.logging.v2.ConfigServiceV2.DeleteSink",
+            "serviceName": "logging.googleapis.com",
+            "authenticationInfo": {
+              "principalEmail": "synthetic@invalid.example"
+            },
+            "requestMetadata": {
+              "callerIp": "198.51.100.20"
+            },
+            "serviceData": {
+              "policyDelta": {
+                "bindingDeltas": [
+                  {
+                    "action": "ADD",
+                    "role": "roles/owner",
+                    "member": "user:synthetic@invalid.example"
+                  }
+                ]
+              }
+            },
+            "status": {
+              "code": 7
+            }
+          }
+        }
+      }
+    ],
+    "expected": []
+  },
+  {
+    "id": "narrow-role",
+    "description": "A non-administrative managed policy does not match the broad-role rule.",
+    "events": [
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-30",
+          "eventTime": "2026-01-01T00:00:00Z",
+          "eventName": "AttachUserPolicy",
+          "eventSource": "iam.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/ReadOnlyAccess"
+          }
+        }
+      }
+    ],
+    "expected": []
+  },
+  {
+    "id": "missing-role-context",
+    "description": "Activity Log without role details cannot establish administrative privilege.",
+    "events": [
+      {
+        "provider": "azure",
+        "record": {
+          "eventDataId": "azure-30",
+          "eventTimestamp": "2026-01-01T00:00:00Z",
+          "subscriptionId": "00000000-0000-0000-0000-000000000000",
+          "caller": "synthetic-principal",
+          "operationName": {
+            "value": "Microsoft.Authorization/roleAssignments/write"
+          },
+          "status": {
+            "value": "Succeeded"
+          }
+        }
+      }
+    ],
+    "expected": []
+  },
+  {
+    "id": "remove-role",
+    "description": "Removing a broad role does not constitute a privilege grant.",
+    "events": [
+      {
+        "provider": "gcp",
+        "record": {
+          "insertId": "gcp-30",
+          "timestamp": "2026-01-01T00:00:00Z",
+          "resource": {
+            "labels": {
+              "project_id": "synthetic-project"
+            }
+          },
+          "protoPayload": {
+            "methodName": "SetIamPolicy",
+            "serviceName": "cloudresourcemanager.googleapis.com",
+            "authenticationInfo": {
+              "principalEmail": "synthetic@invalid.example"
+            },
+            "requestMetadata": {
+              "callerIp": "198.51.100.20"
+            },
+            "serviceData": {
+              "policyDelta": {
+                "bindingDeltas": [
+                  {
+                    "action": "REMOVE",
+                    "role": "roles/owner",
+                    "member": "user:synthetic@invalid.example"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ],
+    "expected": []
+  },
+  {
+    "id": "outside-window",
+    "description": "Key creation eleven minutes after grant is outside the sequence window.",
+    "events": [
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-40",
+          "eventTime": "2026-01-01T00:00:00Z",
+          "eventName": "AttachUserPolicy",
+          "eventSource": "iam.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      },
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-41",
+          "eventTime": "2026-01-01T00:11:00Z",
+          "eventName": "CreateAccessKey",
+          "eventSource": "iam.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      }
+    ],
+    "expected": [
+      "privileged-role-grant"
+    ]
+  },
+  {
+    "id": "different-actor",
+    "description": "Do not correlate unrelated identities.",
+    "events": [
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-50",
+          "eventTime": "2026-01-01T00:00:00Z",
+          "eventName": "AttachUserPolicy",
+          "eventSource": "iam.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      },
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-51",
+          "eventTime": "2026-01-01T00:02:00Z",
+          "eventName": "CreateAccessKey",
+          "eventSource": "iam.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:other"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      }
+    ],
+    "expected": [
+      "privileged-role-grant"
+    ]
+  },
+  {
+    "id": "different-account",
+    "description": "Do not correlate matching identity strings across accounts.",
+    "events": [
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-60",
+          "eventTime": "2026-01-01T00:00:00Z",
+          "eventName": "AttachUserPolicy",
+          "eventSource": "iam.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      },
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-61",
+          "eventTime": "2026-01-01T00:02:00Z",
+          "eventName": "CreateAccessKey",
+          "eventSource": "iam.amazonaws.com",
+          "recipientAccountId": "111111111111",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      }
+    ],
+    "expected": [
+      "privileged-role-grant"
+    ]
+  },
+  {
+    "id": "below-agent-threshold",
+    "description": "Four denials do not meet the configured threshold.",
+    "events": [
+      {
+        "provider": "sentinel",
+        "record": {
+          "seq": 1,
+          "at": "2026-01-01T00:00:05Z",
+          "tenant": "sandbox",
+          "actor": "demo-agent",
+          "action": "tool.denied",
+          "outcome": "denied",
+          "detail": {
+            "tool": "admin.delete"
+          },
+          "prev": "synthetic",
+          "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      {
+        "provider": "sentinel",
+        "record": {
+          "seq": 2,
+          "at": "2026-01-01T00:00:10Z",
+          "tenant": "sandbox",
+          "actor": "demo-agent",
+          "action": "tool.denied",
+          "outcome": "denied",
+          "detail": {
+            "tool": "admin.delete"
+          },
+          "prev": "synthetic",
+          "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      {
+        "provider": "sentinel",
+        "record": {
+          "seq": 3,
+          "at": "2026-01-01T00:00:15Z",
+          "tenant": "sandbox",
+          "actor": "demo-agent",
+          "action": "tool.denied",
+          "outcome": "denied",
+          "detail": {
+            "tool": "admin.delete"
+          },
+          "prev": "synthetic",
+          "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      {
+        "provider": "sentinel",
+        "record": {
+          "seq": 4,
+          "at": "2026-01-01T00:00:20Z",
+          "tenant": "sandbox",
+          "actor": "demo-agent",
+          "action": "tool.denied",
+          "outcome": "denied",
+          "detail": {
+            "tool": "admin.delete"
+          },
+          "prev": "synthetic",
+          "hash": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    ],
+    "expected": []
+  },
+  {
+    "id": "wrong-order",
+    "description": "Credential creation before grant does not satisfy the ordered rule.",
+    "events": [
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-70",
+          "eventTime": "2026-01-01T00:00:00Z",
+          "eventName": "CreateAccessKey",
+          "eventSource": "iam.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      },
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-71",
+          "eventTime": "2026-01-01T00:02:00Z",
+          "eventName": "AttachUserPolicy",
+          "eventSource": "iam.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      }
+    ],
+    "expected": [
+      "privileged-role-grant"
+    ]
+  },
+  {
+    "id": "duplicate-delivery",
+    "description": "Exact duplicate source events are deduplicated.",
+    "events": [
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-80",
+          "eventTime": "2026-01-01T00:00:00Z",
+          "eventName": "StopLogging",
+          "eventSource": "cloudtrail.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      },
+      {
+        "provider": "aws",
+        "record": {
+          "eventID": "aws-80",
+          "eventTime": "2026-01-01T00:00:00Z",
+          "eventName": "StopLogging",
+          "eventSource": "cloudtrail.amazonaws.com",
+          "recipientAccountId": "000000000000",
+          "userIdentity": {
+            "principalId": "SYNTHETIC:researcher"
+          },
+          "sourceIPAddress": "192.0.2.10",
+          "requestParameters": {
+            "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      }
+    ],
+    "expected": [
+      "logging-disruption"
+    ]
+  }
+]

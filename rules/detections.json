@@ -1,0 +1,110 @@
+[
+  {
+    "id": "privileged-role-grant",
+    "version": 1,
+    "title": "Privileged role granted",
+    "description": "A successful assignment of a recognized broad administrative role. Validate change context before response.",
+    "severity": "high",
+    "technique": "T1098",
+    "windowSeconds": 1,
+    "kind": "match",
+    "steps": [
+      {
+        "action": "privilege.grant",
+        "outcome": "success",
+        "privileged": true
+      }
+    ]
+  },
+  {
+    "id": "credential-after-privilege",
+    "version": 1,
+    "title": "Credential created after privilege grant",
+    "description": "The same provider, account, and actor performed a privileged grant followed by credential creation within ten minutes.",
+    "severity": "critical",
+    "technique": "T1098.001",
+    "windowSeconds": 600,
+    "kind": "sequence",
+    "steps": [
+      {
+        "action": "privilege.grant",
+        "outcome": "success",
+        "privileged": true
+      },
+      {
+        "action": "credential.create",
+        "outcome": "success"
+      }
+    ]
+  },
+  {
+    "id": "logging-disruption",
+    "version": 1,
+    "title": "Audit collection disrupted",
+    "description": "A successful stop, deletion of an audit trail, diagnostic setting, or logging sink. Verify intended routing and change authorization.",
+    "severity": "high",
+    "technique": "T1562.008",
+    "windowSeconds": 1,
+    "kind": "match",
+    "steps": [
+      {
+        "action": "logging.disable",
+        "outcome": "success"
+      }
+    ]
+  },
+  {
+    "id": "privilege-then-evasion",
+    "version": 1,
+    "title": "Privilege grant followed by audit disruption",
+    "description": "A recognized broad role grant followed by logging disruption by the same provider, account, and actor within fifteen minutes.",
+    "severity": "critical",
+    "technique": "T1562.008",
+    "windowSeconds": 900,
+    "kind": "sequence",
+    "steps": [
+      {
+        "action": "privilege.grant",
+        "outcome": "success",
+        "privileged": true
+      },
+      {
+        "action": "logging.disable",
+        "outcome": "success"
+      }
+    ]
+  },
+  {
+    "id": "agent-denial-burst",
+    "version": 1,
+    "title": "Agent repeatedly denied tool access",
+    "description": "At least five denied tool calls by the same agent in sixty seconds. Could indicate policy probing or an incorrectly configured agent.",
+    "severity": "high",
+    "technique": "T1078",
+    "windowSeconds": 60,
+    "kind": "threshold",
+    "threshold": 5,
+    "steps": [
+      {
+        "action": "agent.denied",
+        "outcome": "failure"
+      }
+    ]
+  },
+  {
+    "id": "invalid-approval-use",
+    "version": 1,
+    "title": "Invalid or replayed approval",
+    "description": "The gateway rejected an approval. Investigate expiration, mismatched arguments, or reuse. This signal alone does not distinguish those causes.",
+    "severity": "high",
+    "technique": "T1550",
+    "windowSeconds": 1,
+    "kind": "match",
+    "steps": [
+      {
+        "action": "approval.invalid",
+        "outcome": "failure"
+      }
+    ]
+  }
+]

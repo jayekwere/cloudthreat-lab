@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+    <title>CloudThreat Lab | Detection workspace</title>
+  </head>
+  <body class="lab">
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand"><span class="mark">⌁</span>CloudThreat</div>
+        <div>
+          <p class="overline">Detection workspace</p>
+          <nav class="nav">
+            <a href="#overview" class="active">◈ &nbsp; Investigation</a
+            ><a href="#findings">◎ &nbsp; Findings</a><a href="#replay">↻ &nbsp; Replay lab</a
+            ><a href="#rules">▤ &nbsp; Detection rules</a>
+          </nav>
+        </div>
+        <div class="side-note">
+          <span class="dot"></span> Evidence before assumptions<br />AWS · Azure · GCP · Agents<br /><br />v1.0.0
+          · Reproducible replay
+        </div>
+      </aside>
+      <div class="workspace">
+        <header class="topbar">
+          <div class="crumb">Workspace / <b>Threat investigation</b></div>
+          <div class="connection">
+            <label for="token">Access token</label
+            ><input
+              id="token"
+              type="password"
+              placeholder="Paste your access token"
+              autocomplete="off"
+              aria-label="Access token"
+            /><button id="connect">Connect</button
+            ><span id="status" class="status" role="status">Disconnected</span>
+          </div>
+        </header>
+        <main class="main" id="overview">
+          <div class="heading">
+            <div>
+              <span class="overline">From cloud activity to an explainable finding</span>
+              <h1>Follow the attack sequence.</h1>
+              <p>Replay activity, test detection logic, and investigate the evidence.</p>
+            </div>
+            <span class="badge">Detection as code</span>
+          </div>
+          <div class="notice" id="notice" role="status">
+            Connect an analyst or operator token, then replay a labeled scenario.
+          </div>
+          <section class="stats" aria-label="Investigation metrics">
+            <article class="stat">
+              <div class="stat-top">Normalized events <span class="stat-icon">▤</span></div>
+              <b class="value" id="event-count">0</b><small>Validated, ordered, deduplicated</small>
+            </article>
+            <article class="stat">
+              <div class="stat-top">Findings <span class="stat-icon">⌁</span></div>
+              <b class="value" id="finding-count">0</b><small>With supporting event evidence</small>
+            </article>
+            <article class="stat">
+              <div class="stat-top">Active rules <span class="stat-icon">⌘</span></div>
+              <b class="value" id="rule-count">0</b><small>Versioned, bounded evaluation</small>
+            </article>
+            <article class="stat">
+              <div class="stat-top">Scenario checks <span class="stat-icon">✓</span></div>
+              <b class="value" id="checks">0/0</b><small>Synthetic fixture suite</small>
+            </article>
+          </section>
+          <div class="grid">
+            <div>
+              <section class="panel" id="replay">
+                <div class="panel-head">
+                  <div>
+                    <h2>Replay lab</h2>
+                    <p class="subtle">Safe reconstruction. No cloud changes.</p>
+                  </div>
+                  <span class="badge">Event time</span>
+                </div>
+                <div class="panel-body">
+                  <label for="scenario">Labeled scenario</label>
+                  <div class="form-row">
+                    <select id="scenario" class="run-select">
+                      <option>Connect to load scenarios</option></select
+                    ><button id="replay-button" class="primary">↻ Replay scenario</button>
+                  </div>
+                  <p id="scenario-description">
+                    Select an attack or benign control to inspect its detection results.
+                  </p>
+                  <details>
+                    <summary>Import a JSON event batch</summary>
+                    <label for="event-file"
+                      >Source exports in provider envelopes, up to 256 KB</label
+                    ><input
+                      type="file"
+                      id="event-file"
+                      class="upload"
+                      accept="application/json,.json"
+                    /><button id="import-button">Validate and replay</button>
+                  </details>
+                  <label for="saved-runs">Saved investigations</label>
+                  <div class="form-row">
+                    <select id="saved-runs">
+                      <option>No investigations loaded</option></select
+                    ><button id="open-run">Open investigation</button>
+                  </div>
+                </div>
+              </section>
+              <section class="panel" id="findings">
+                <div class="panel-head">
+                  <div>
+                    <h2>Detection findings</h2>
+                    <p class="subtle" id="run-name">No investigation selected</p>
+                  </div>
+                  <button id="export" class="ghost">↓ Export JSON</button>
+                </div>
+                <div id="finding-list" class="empty">Replay a scenario to generate findings.</div>
+              </section>
+              <section class="panel" id="rules">
+                <div class="panel-head">
+                  <h2>Rule catalog</h2>
+                  <span class="subtle">Review the logic, then test it</span>
+                </div>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Detection</th>
+                        <th>Logic</th>
+                        <th>Window</th>
+                        <th>ATT&amp;CK</th>
+                      </tr>
+                    </thead>
+                    <tbody id="rule-list"></tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+            <div>
+              <section class="panel">
+                <div class="panel-head">
+                  <h2>Investigation timeline</h2>
+                  <span class="badge" id="timeline-provider">Evidence</span>
+                </div>
+                <div class="panel-body">
+                  <p id="finding-description">
+                    Select a finding to inspect the events that caused it.
+                  </p>
+                  <div id="timeline" class="timeline"></div>
+                </div>
+              </section>
+              <section class="panel">
+                <div class="panel-head">
+                  <h2>Validation scorecard</h2>
+                  <span class="badge">Labeled fixtures</span>
+                </div>
+                <div class="panel-body">
+                  <p>
+                    Results describe the included synthetic scenarios. They do not estimate
+                    performance on live traffic.
+                  </p>
+                  <div class="metric-row"><span>Precision</span><b id="precision">Pending</b></div>
+                  <div class="metric-row"><span>Recall</span><b id="recall">Pending</b></div>
+                  <div class="metric-row">
+                    <span>False positives</span><b id="false-positives">Pending</b>
+                  </div>
+                  <div class="metric-row">
+                    <span>Missed expectations</span><b id="false-negatives">Pending</b>
+                  </div>
+                  <p class="subtle" id="scope">Each scenario is checked against every rule.</p>
+                </div>
+              </section>
+              <section class="panel">
+                <div class="panel-head"><h2>Correlation boundaries</h2></div>
+                <div class="panel-body">
+                  <div class="metric-row">
+                    <span>Identity scope</span><b>Provider + account + actor</b>
+                  </div>
+                  <div class="metric-row"><span>Event ordering</span><b>Source timestamps</b></div>
+                  <div class="metric-row">
+                    <span>Duplicate delivery</span><b>Exact event deduplication</b>
+                  </div>
+                  <p class="subtle">No automatic identity linking across cloud accounts.</p>
+                </div>
+              </section>
+            </div>
+          </div>
+          <div class="footer">
+            <span>Local workspace · Synthetic demonstrations</span
+            ><span>No telemetry · Evidence you can inspect</span>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+
+> cloudthreat-lab@1.0.0 test:coverage
+> node --experimental-test-coverage --import tsx --test --test-concurrency=1 test/*.test.ts
+
+✔ authenticated analyst replay persists evidence, enforces tenant isolation, and restricts deletion (134.308875ms)
+✔ malformed batches are atomic, foreign origins are denied, and no raw record is persisted (8.252459ms)
+✔ all labeled attack and benign scenarios meet their rule expectations (26.603375ms)
+✔ scenario: aws-identity-chain (1.435042ms)
+✔ scenario: azure-role-evasion (0.347959ms)
+✔ scenario: gcp-identity-chain (0.390875ms)
+✔ scenario: agent-policy-probing (0.429916ms)
+✔ scenario: approval-reuse (0.24775ms)
+✔ scenario: aws-benign-read (0.226ms)
+✔ scenario: azure-benign-read (0.234083ms)
+✔ scenario: gcp-benign-read (0.333334ms)
+✔ scenario: failed-mutations (0.348791ms)
+✔ scenario: narrow-role (0.465625ms)
+✔ scenario: missing-role-context (0.518167ms)
+✔ scenario: remove-role (0.545958ms)
+✔ scenario: outside-window (0.366792ms)
+✔ scenario: different-actor (0.540083ms)
+✔ scenario: different-account (0.558667ms)
+✔ scenario: below-agent-threshold (1.731042ms)
+✔ scenario: wrong-order (0.350917ms)
+✔ scenario: duplicate-delivery (0.253667ms)
+✔ out-of-order delivery and duplicate batches produce stable results (1.130458ms)
+✔ conflicting IDs reject the whole batch (0.57675ms)
+✔ same source IDs in distinct accounts remain separate (0.162166ms)
+✔ normalization rejects timestamp (0.530625ms)
+✔ normalization rejects principal (0.183583ms)
+✔ normalization rejects account (0.100708ms)
+✔ normalization rejects provider (0.3535ms)
+✔ normalization rejects oversized (0.236667ms)
+✔ AWS event source must match the mutation service (0.120625ms)
+✔ empty batches, oversized batches, unknown fields in envelopes, and invalid rule logic fail closed (1.064334ms)
+✔ sequence window is inclusive at boundary and exclusive one millisecond later (0.725834ms)
+✔ threshold does not count duplicate events and suppresses repeated overlapping alerts (1.514375ms)
+✔ cross-provider strings never join and failed first step cannot start a sequence (0.664625ms)
+✔ metrics expose injected false positives and misses instead of masking them (1.032917ms)
+✔ GCP operations require the correct service and simultaneous events do not prove sequence (0.754166ms)
+✔ actual synthetic Sentinel audit export replays through the agent adapter (1.213875ms)
+✔ maximum-size no-completion sequence remains bounded (90.025208ms)
+✔ valid asymmetric access token maps to the server registry (14.643125ms)
+✔ token contract: issuer (3.496125ms)
+✔ token contract: audience (2.29825ms)
+✔ token contract: expired (1.883875ms)
+✔ token contract: future (1.494208ms)
+✔ token contract: lifetime (1.146584ms)
+✔ token contract: subject (0.839333ms)
+✔ token contract: type (0.489167ms)
+✔ token contract: jti (0.663ms)
+✔ token contract: forged-role (0.450209ms)
+✔ invalid headers, unsigned payloads, and foreign signing keys fail closed (0.831833ms)
+✔ private keys and ambiguous identities are rejected at configuration (0.60275ms)
+✔ canonical request digest ignores object key order and preserves array order (0.237833ms)
+✔ rate limits include bounded key capacity and window expiry (0.178333ms)
+✔ audit detects edited content, removed middle records, and wrong keys on reopen (9.473625ms)
+✔ database transaction rolls back intent and state together (0.374625ms)
+✔ RS256 public verification and audit content-edit detection (72.691834ms)
+ℹ tests 55
+ℹ suites 0
+ℹ pass 55
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1865.438208
+ℹ start of coverage report
+ℹ -------------------------------------------------------------------
+ℹ file          | line % | branch % | funcs % | uncovered lines
+ℹ -------------------------------------------------------------------
+ℹ src           |        |          |         |
+ℹ  app.ts       |  92.04 |    85.71 |   75.00 | 27-28 36-38 52-55
+ℹ  engine.ts    | 100.00 |    94.23 |  100.00 |
+ℹ  http.ts      |  86.87 |    78.26 |   50.00 | 36-37 58-65 67 73-74
+ℹ  normalize.ts | 100.00 |    92.31 |  100.00 |
+ℹ  replay.ts    |  95.52 |    88.89 |  100.00 | 31-33
+ℹ  security.ts  | 100.00 |    96.49 |  100.00 |
+ℹ  store.ts     |  97.30 |    92.86 |  100.00 | 17-19
+ℹ -------------------------------------------------------------------
+ℹ all files     |  96.85 |    91.73 |   90.12 |
+ℹ -------------------------------------------------------------------
+ℹ end of coverage report

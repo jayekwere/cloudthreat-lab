@@ -1,0 +1,53 @@
+[
+  {
+    "provider": "aws",
+    "record": {
+      "eventID": "aws-1",
+      "eventTime": "2026-01-01T00:00:00Z",
+      "eventName": "AttachUserPolicy",
+      "eventSource": "iam.amazonaws.com",
+      "recipientAccountId": "000000000000",
+      "userIdentity": {
+        "principalId": "SYNTHETIC:researcher"
+      },
+      "sourceIPAddress": "192.0.2.10",
+      "requestParameters": {
+        "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+      }
+    }
+  },
+  {
+    "provider": "aws",
+    "record": {
+      "eventID": "aws-2",
+      "eventTime": "2026-01-01T00:02:00Z",
+      "eventName": "CreateAccessKey",
+      "eventSource": "iam.amazonaws.com",
+      "recipientAccountId": "000000000000",
+      "userIdentity": {
+        "principalId": "SYNTHETIC:researcher"
+      },
+      "sourceIPAddress": "192.0.2.10",
+      "requestParameters": {
+        "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+      }
+    }
+  },
+  {
+    "provider": "aws",
+    "record": {
+      "eventID": "aws-3",
+      "eventTime": "2026-01-01T00:04:00Z",
+      "eventName": "StopLogging",
+      "eventSource": "cloudtrail.amazonaws.com",
+      "recipientAccountId": "000000000000",
+      "userIdentity": {
+        "principalId": "SYNTHETIC:researcher"
+      },
+      "sourceIPAddress": "192.0.2.10",
+      "requestParameters": {
+        "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+      }
+    }
+  }
+]
