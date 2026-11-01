@@ -122,3 +122,7 @@ Correlation uses exact provider/account/actor strings. There is no cross-cloud i
 Each batch has at most 2,000 records and the HTTP body limit is 256 KiB. Each tenant can retain at most 100 investigations until an operator deletes some. Rate limits are process local. Audit history needs retention management and independent checkpoints. Detection metrics remain fixture scoped.
 
 See [SECURITY.md](SECURITY.md) for reporting and [CONTRIBUTING.md](CONTRIBUTING.md) for changes. Licensed under [MIT](LICENSE).
+
+---
+
+**AI assistance:** AI tools helped with code or documentation.
